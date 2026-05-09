@@ -2,11 +2,13 @@ import { useState } from "react";
 import API from "../services/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Signup() {
 
   const navigate = useNavigate();
-
+  
+  const [showPassword, setShowPassword] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
 
   const [otp, setOtp] = useState("");
@@ -116,14 +118,32 @@ function Signup() {
               onChange={handleChange}
             />
 
+             {/* PASSWORD FIELD */}
+          <div className="relative">
+
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
-              className="w-full border p-4 rounded-xl"
+              className="w-full border p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
               onChange={handleChange}
             />
 
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-xl"
+            >
+              {showPassword ? (
+                <FiEyeOff />
+              ) : (
+                <FiEye />
+              )}
+            </button>
+
+          </div>
             <button className="w-full bg-blue-600 text-white py-4 rounded-xl text-lg font-semibold">
               Send OTP
             </button>
