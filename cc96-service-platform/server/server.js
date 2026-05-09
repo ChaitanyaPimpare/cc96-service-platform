@@ -40,6 +40,7 @@ sequelize.authenticate()
 
   sequelize.sync({ alter: true })
   .then(() => {
+
     console.log("Database Synced");
 
     seedServices();
