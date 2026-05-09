@@ -40,13 +40,17 @@ function Navbar() {
         </Link>
 
         {user && (
-          <Link
-            to="/customer/dashboard"
-            className="text-lg font-semibold hover:text-blue-600 transition"
-          >
-            Dashboard
-          </Link>
-        )}
+  <Link
+    to={
+      user.role === "vendor"
+        ? "/vendor/dashboard"
+        : "/customer/dashboard"
+    }
+    className="text-lg font-semibold hover:text-blue-600 transition"
+  >
+    Dashboard
+  </Link>
+)}
 
       </div>
 

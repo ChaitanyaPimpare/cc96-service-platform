@@ -76,12 +76,18 @@ function Home() {
          <div className="mt-8 flex justify-center">
 
   {user && (
-    <Link to="/customer/dashboard">
-      <button className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
-        Dashboard
-      </button>
-    </Link>
-  )}
+  <Link
+    to={
+      user.role === "vendor"
+        ? "/vendor/dashboard"
+        : "/customer/dashboard"
+    }
+  >
+    <button className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
+      Dashboard
+    </button>
+  </Link>
+)}
 
 </div>
 
