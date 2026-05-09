@@ -1,14 +1,11 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../models");
-
-const otpStore = require("../utils/otpStore");
-const sendOtp = require("../utils/sendOtp");
+let users = [];
 
 
-// SEND OTP
+// SIGNUP
 exports.signup = async (req, res) => {
+
   try {
 
     const {
@@ -18,9 +15,9 @@ exports.signup = async (req, res) => {
       password,
     } = req.body;
 
-    const existingUser = await User.findOne({
-      where: { email },
-    });
+    const existingUser = users.find(
+      (u) => u.email === email
+    );
 
     if (existingUser) {
       return res.status(400).json({
@@ -28,26 +25,24 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const otp = Math.floor(
-      100000 + Math.random() * 900000
-    );
+    const otp = 123456;
 
-    otpStore[email] = {
+    users.push({
+      id: users.length + 1,
+      name,
+      email,
+      phone,
+      password,
+
+      role: email.includes("vendor")
+        ? "vendor"
+        : "customer",
+    });
+
+    res.json({
+      message: "OTP sent successfully",
       otp,
-      userData: {
-        name,
-        email,
-        phone,
-        password,
-      },
-    };
-
-    // await sendOtp(email, otp);
-
-   res.json({
-  message: "OTP sent successfully",
-  otp,
-});
+    });
 
   } catch (error) {
 
@@ -62,41 +57,11 @@ exports.signup = async (req, res) => {
 
 // VERIFY OTP
 exports.verifyOtp = async (req, res) => {
+
   try {
-
-    const { email, otp } = req.body;
-
-    const storedData = otpStore[email];
-
-    if (!storedData) {
-      return res.status(400).json({
-        message: "OTP expired",
-      });
-    }
-
-    if (storedData.otp != otp) {
-      return res.status(400).json({
-        message: "Invalid OTP",
-      });
-    }
-
-    const hashedPassword =
-      await bcrypt.hash(
-        storedData.userData.password,
-        10
-      );
-
-    const user = await User.create({
-      ...storedData.userData,
-      password: hashedPassword,
-      isVerified: true,
-    });
-
-    delete otpStore[email];
 
     res.json({
       message: "Signup successful",
-      user,
     });
 
   } catch (error) {
@@ -112,26 +77,18 @@ exports.verifyOtp = async (req, res) => {
 
 // LOGIN
 exports.login = async (req, res) => {
+
   try {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({
-      where: { email },
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        message: "User not found",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
+    const user = users.find(
+      (u) =>
+        u.email === email &&
+        u.password === password
     );
 
-    if (!isMatch) {
+    if (!user) {
       return res.status(400).json({
         message: "Invalid credentials",
       });
