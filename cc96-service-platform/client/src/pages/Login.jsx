@@ -43,7 +43,7 @@ const { closeModal } =
     });
   };
 
-  const handleLogin = async (e) => {
+ const handleLogin = async (e) => {
 
   e.preventDefault();
 
@@ -66,26 +66,13 @@ const { closeModal } =
       JSON.stringify(res.data.user)
     );
 
-   successToast(
-  "Login successful"
-);
+    successToast(
+      "Login successful"
+    );
 
     closeModal();
 
-    if (
-      res.data.user.role === "vendor"
-    ) {
-
-      navigate(
-        "/vendor/dashboard"
-      );
-
-    } else {
-
-      navigate(
-        "/customer/dashboard"
-      );
-    }
+    navigate("/");
 
   } catch (error) {
 
