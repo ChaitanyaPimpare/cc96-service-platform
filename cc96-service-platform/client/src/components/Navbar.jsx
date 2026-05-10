@@ -2,7 +2,9 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
-
+import {
+  useAuthModal,
+} from "../context/AuthModalContext";
 import { useState } from "react";
 
 import {
@@ -11,7 +13,10 @@ import {
 } from "react-icons/fi";
 
 function Navbar() {
-
+const {
+  openLogin,
+  openSignup,
+} = useAuthModal();
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] =
@@ -136,37 +141,39 @@ function Navbar() {
               <Link to="/login">
 
                 <button
-                  className="
-                  bg-black
-                  hover:bg-gray-800
-                  transition
-                  text-white
-                  px-5
-                  py-2
-                  rounded-xl
-                "
-                >
-                  Login
-                </button>
+  onClick={openLogin}
+  className="
+  bg-black
+  hover:bg-gray-800
+  transition
+  text-white
+  px-5
+  py-2
+  rounded-xl
+"
+>
+  Login
+</button>
 
               </Link>
 
 
               <Link to="/signup">
 
-                <button
-                  className="
-                  bg-blue-600
-                  hover:bg-blue-700
-                  transition
-                  text-white
-                  px-5
-                  py-2
-                  rounded-xl
-                "
-                >
-                  Signup
-                </button>
+              <button
+  onClick={openSignup}
+  className="
+  bg-blue-600
+  hover:bg-blue-700
+  transition
+  text-white
+  px-5
+  py-2
+  rounded-xl
+"
+>
+  Signup
+</button>
 
               </Link>
 
@@ -285,17 +292,23 @@ function Navbar() {
                 }
               >
 
-                <button
-                  className="
-                  w-full
-                  bg-black
-                  text-white
-                  py-3
-                  rounded-xl
-                "
-                >
-                  Login
-                </button>
+             <button
+  onClick={() => {
+
+    openLogin();
+
+    setMenuOpen(false);
+  }}
+  className="
+  w-full
+  bg-black
+  text-white
+  py-3
+  rounded-xl
+"
+>
+  Login
+</button>
 
               </Link>
 
@@ -307,17 +320,23 @@ function Navbar() {
                 }
               >
 
-                <button
-                  className="
-                  w-full
-                  bg-blue-600
-                  text-white
-                  py-3
-                  rounded-xl
-                "
-                >
-                  Signup
-                </button>
+             <button
+  onClick={() => {
+
+    openSignup();
+
+    setMenuOpen(false);
+  }}
+  className="
+  w-full
+  bg-blue-600
+  text-white
+  py-3
+  rounded-xl
+"
+>
+  Signup
+</button>
 
               </Link>
 

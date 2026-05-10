@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Footer from "../components/Footer";
+import TutorialModal from "../components/TutorialModal";
+
 import {
   FaStar,
   FaSearch,
@@ -67,7 +69,7 @@ function Home() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
+<TutorialModal />
       {/* <Navbar /> */}
 
       {/* HERO SECTION */}

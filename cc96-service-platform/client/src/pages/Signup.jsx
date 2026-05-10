@@ -1,4 +1,7 @@
 import { useState } from "react";
+import {
+  useAuthModal,
+} from "../context/AuthModalContext";
 
 import API from "../services/api";
 
@@ -14,8 +17,10 @@ import {
   FiEyeOff,
 } from "react-icons/fi";
 
-function Signup() {
+function Signup({ isModal }) {
 
+  const { setMode } =
+  useAuthModal();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] =
@@ -99,10 +104,13 @@ function Signup() {
       toast.success(
         res.data.message
       );
+      setOtp("");
+
+setShowOtp(false);
 
       setLoading(false);
 
-      navigate("/login");
+      setMode("login");
 
     } catch (error) {
 
@@ -116,355 +124,339 @@ function Signup() {
   };
 
   return (
+  <div
+    className={
+      isModal
+        ? ""
+        : `
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        bg-gradient-to-br
+        from-blue-100
+        via-white
+        to-blue-200
+        px-5
+      `
+    }
+  >
+
     <div
-      className="
-      min-h-screen
-      flex
-      items-center
-      justify-center
-      bg-gradient-to-br
-      from-blue-100
-      via-white
-      to-blue-200
-      px-5
-    "
+      className={
+        isModal
+          ? "w-full"
+          : `
+          bg-white
+          p-10
+          rounded-3xl
+          shadow-2xl
+          w-full
+          max-w-md
+        `
+      }
     >
 
-      <div
+      {/* TITLE */}
+
+      <h1
         className="
-        bg-white
-        p-10
-        rounded-3xl
-        shadow-2xl
-        w-full
-        max-w-md
+        text-3xl
+        md:text-5xl
+        font-bold
+        text-center
+        text-blue-600
       "
       >
+        Create Account
+      </h1>
 
-        {/* TITLE */}
+      <p
+        className="
+        text-center
+        text-gray-500
+        mt-3
+        mb-8
+      "
+      >
+        Signup to book trusted services
+      </p>
 
-        <h1
-          className="
-          text-5xl
-          font-bold
-          text-center
-          text-blue-600
-        "
+
+      {!showOtp ? (
+
+        <form
+          onSubmit={handleSignup}
+          className="space-y-5"
         >
-          Create Account
-        </h1>
 
-        <p
-          className="
-          text-center
-          text-gray-500
-          mt-3
-          mb-10
-        "
-        >
-          Signup to book trusted services
-        </p>
+          {/* NAME */}
 
+          <div>
 
-        {!showOtp ? (
-
-          <form
-            onSubmit={handleSignup}
-            className="space-y-6"
-          >
-
-            {/* NAME */}
-
-            <div>
-
-              <label
-                className="
-                block
-                mb-2
-                font-semibold
-              "
-              >
-                Full Name
-              </label>
-
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter full name"
-                className="
-                w-full
-                border
-                border-gray-300
-                p-4
-                rounded-2xl
-                outline-none
-                focus:ring-2
-                focus:ring-blue-500
-              "
-                onChange={handleChange}
-                required
-              />
-
-            </div>
-
-
-            {/* EMAIL */}
-
-            <div>
-
-              <label
-                className="
-                block
-                mb-2
-                font-semibold
-              "
-              >
-                Email
-              </label>
-
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter email"
-                className="
-                w-full
-                border
-                border-gray-300
-                p-4
-                rounded-2xl
-                outline-none
-                focus:ring-2
-                focus:ring-blue-500
-              "
-                onChange={handleChange}
-                required
-              />
-
-            </div>
-
-
-            {/* PHONE */}
-
-            <div>
-
-              <label
-                className="
-                block
-                mb-2
-                font-semibold
-              "
-              >
-                Phone
-              </label>
-
-              <input
-                type="text"
-                name="phone"
-                placeholder="Enter phone number"
-                className="
-                w-full
-                border
-                border-gray-300
-                p-4
-                rounded-2xl
-                outline-none
-                focus:ring-2
-                focus:ring-blue-500
-              "
-                onChange={handleChange}
-                required
-              />
-
-            </div>
-
-
-            {/* PASSWORD */}
-
-            <div>
-
-              <label
-                className="
-                block
-                mb-2
-                font-semibold
-              "
-              >
-                Password
-              </label>
-
-              <div className="relative">
-
-                <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
-                  name="password"
-                  placeholder="Enter password"
-                  className="
-                  w-full
-                  border
-                  border-gray-300
-                  p-4
-                  rounded-2xl
-                  outline-none
-                  focus:ring-2
-                  focus:ring-blue-500
-                "
-                  onChange={handleChange}
-                  required
-                />
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
-                  }
-                  className="
-                  absolute
-                  right-4
-                  top-1/2
-                  -translate-y-1/2
-                  text-gray-500
-                  text-xl
-                "
-                >
-
-                  {showPassword ? (
-                    <FiEyeOff />
-                  ) : (
-                    <FiEye />
-                  )}
-
-                </button>
-
-              </div>
-
-            </div>
-
-
-            {/* BUTTON */}
-
-            <button
-              disabled={loading}
+            <label
               className="
-              w-full
-              bg-blue-600
-              hover:bg-blue-700
-              transition
-              text-white
-              py-4
-              rounded-2xl
-              text-lg
+              block
+              mb-2
               font-semibold
-              disabled:opacity-70
             "
             >
-
-              {loading
-                ? "Sending OTP..."
-                : "Send OTP"}
-
-            </button>
-
-          </form>
-
-        ) : (
-
-          <div className="space-y-6">
-
-            <h2
-              className="
-              text-center
-              text-2xl
-              font-bold
-            "
-            >
-              Verify OTP
-            </h2>
+              Full Name
+            </label>
 
             <input
               type="text"
-              placeholder="Enter OTP"
-              maxLength={6}
+              name="name"
+              placeholder="Enter full name"
               className="
               w-full
-              border-2
+              border
               border-gray-300
-              p-5
+              p-4
               rounded-2xl
-              text-center
-              text-3xl
-              tracking-[12px]
-              font-bold
               outline-none
               focus:ring-2
-              focus:ring-green-500
+              focus:ring-blue-500
             "
-              onChange={(e) =>
-                setOtp(e.target.value)
-              }
+              onChange={handleChange}
+              required
             />
 
-            <button
-              disabled={loading}
-              onClick={verifyOtp}
+          </div>
+
+
+          {/* EMAIL */}
+
+          <div>
+
+            <label
               className="
-              w-full
-              bg-green-600
-              hover:bg-green-700
-              transition
-              text-white
-              py-4
-              rounded-2xl
-              text-lg
+              block
+              mb-2
               font-semibold
-              disabled:opacity-70
             "
             >
+              Email
+            </label>
 
-              {loading
-                ? "Verifying..."
-                : "Verify OTP"}
-
-            </button>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              className="
+              w-full
+              border
+              border-gray-300
+              p-4
+              rounded-2xl
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
+              onChange={handleChange}
+              required
+            />
 
           </div>
-        )}
 
 
-        {/* LOGIN LINK */}
+          {/* PHONE */}
 
-        <p
-          className="
-          text-center
-          mt-8
-          text-gray-600
-        "
-        >
+          <div>
 
-          Already have an account?
+            <label
+              className="
+              block
+              mb-2
+              font-semibold
+            "
+            >
+              Phone
+            </label>
 
-          <Link
-            to="/login"
+            <input
+              type="text"
+              name="phone"
+              placeholder="Enter phone number"
+              className="
+              w-full
+              border
+              border-gray-300
+              p-4
+              rounded-2xl
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
+              onChange={handleChange}
+              required
+            />
+
+          </div>
+
+
+          {/* PASSWORD */}
+
+          <div>
+
+            <label
+              className="
+              block
+              mb-2
+              font-semibold
+            "
+            >
+              Password
+            </label>
+
+            <div className="relative">
+
+              <input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                name="password"
+                placeholder="Enter password"
+                className="
+                w-full
+                border
+                border-gray-300
+                p-4
+                rounded-2xl
+                outline-none
+                focus:ring-2
+                focus:ring-blue-500
+              "
+                onChange={handleChange}
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
+                className="
+                absolute
+                right-4
+                top-1/2
+                -translate-y-1/2
+                text-gray-500
+                text-xl
+              "
+              >
+
+                {showPassword ? (
+                  <FiEyeOff />
+                ) : (
+                  <FiEye />
+                )}
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          {/* BUTTON */}
+
+          <button
+            disabled={loading}
             className="
-            text-blue-600
+            w-full
+            bg-blue-600
+            hover:bg-blue-700
+            transition
+            text-white
+            py-4
+            rounded-2xl
+            text-lg
             font-semibold
-            ml-2
+            disabled:opacity-70
           "
           >
-            Login
-          </Link>
 
-        </p>
+            {loading
+              ? "Sending OTP..."
+              : "Send OTP"}
 
-      </div>
+          </button>
+
+        </form>
+
+      ) : (
+
+        <div className="space-y-5">
+
+          <h2
+            className="
+            text-center
+            text-2xl
+            font-bold
+          "
+          >
+            Verify OTP
+          </h2>
+
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            maxLength={6}
+            className="
+            w-full
+            border-2
+            border-gray-300
+            p-4
+            rounded-2xl
+            text-center
+            text-2xl
+            tracking-[10px]
+            font-bold
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
+            onChange={(e) =>
+              setOtp(e.target.value)
+            }
+          />
+
+          <button
+            disabled={loading}
+            onClick={verifyOtp}
+            className="
+            w-full
+            bg-green-600
+            hover:bg-green-700
+            transition
+            text-white
+            py-4
+            rounded-2xl
+            text-lg
+            font-semibold
+            disabled:opacity-70
+          "
+          >
+
+            {loading
+              ? "Verifying..."
+              : "Verify OTP"}
+
+          </button>
+
+        </div>
+
+      )}
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Signup;
