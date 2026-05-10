@@ -169,68 +169,31 @@ function Home() {
 
           <div className="mt-8 flex justify-center gap-4 flex-wrap">
 
-            {!user ? (
-              <>
-                <Link to="/signup">
-                  <button
-                    className="
-                    bg-white
-                    text-blue-600
-                    px-8
-                    py-3
-                    rounded-xl
-                    font-semibold
-                    hover:scale-105
-                    transition
-                  "
-                  >
-                    Signup
-                  </button>
-                </Link>
-
-                <Link to="/login">
-                  <button
-                    className="
-                    bg-blue-600
-                    text-white
-                    px-8
-                    py-3
-                    rounded-xl
-                    font-semibold
-                    hover:scale-105
-                    transition
-                  "
-                  >
-                    Login
-                  </button>
-                </Link>
-              </>
-            ) : (
-              <Link
-                to={
-                  user.role === "vendor"
-                    ? "/vendor/dashboard"
-                    : "/customer/dashboard"
-                }
-              >
-                <button
-                  className="
-                  bg-white
-                  text-blue-600
-                  px-8
-                  py-3
-                  rounded-xl
-                  font-semibold
-                  hover:scale-105
-                  transition
-                "
-                >
-                  Dashboard
-                </button>
-              </Link>
-            )}
-
-          </div>
+           {user && (
+  <Link
+    to={
+      user.role === "vendor"
+        ? "/vendor/dashboard"
+        : "/customer/dashboard"
+    }
+  >
+    <button
+      className="
+      bg-white
+      text-blue-600
+      px-8
+      py-3
+      rounded-xl
+      font-semibold
+      hover:scale-105
+      transition
+    "
+    >
+      Dashboard
+    </button>
+  </Link>
+)}
+</div>
 
         </div>
       </div>
