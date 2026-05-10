@@ -60,7 +60,21 @@ const [generatedOtp,
   const handleSignup = async (e) => {
 
     e.preventDefault();
+const emailRegex =
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+if (
+  !emailRegex.test(
+    formData.email
+  )
+) {
+
+  errorToast(
+    "Please enter a valid email"
+  );
+
+  return;
+}
     setLoading(true);
 
     try {
