@@ -38,7 +38,7 @@ sequelize.authenticate()
 
   console.log("MySQL Connected");
 
-  sequelize.sync({ alter: true })
+  sequelize.sync({ force: true })
   .then(() => {
 
     console.log("Database Synced");
