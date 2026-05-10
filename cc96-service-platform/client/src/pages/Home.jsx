@@ -29,30 +29,12 @@ function Home() {
 
 useEffect(() => {
 
-  const updateUser = () => {
-
-    const storedUser =
-      JSON.parse(
-        localStorage.getItem("user")
-      );
-
-    setUser(storedUser);
-  };
-
-  updateUser();
-
-  window.addEventListener(
-    "storage",
-    updateUser
-  );
-
-  return () => {
-
-    window.removeEventListener(
-      "storage",
-      updateUser
+  const storedUser =
+    JSON.parse(
+      localStorage.getItem("user")
     );
-  };
+
+  setUser(storedUser);
 
 }, []);
 
