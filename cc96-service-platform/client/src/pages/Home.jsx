@@ -409,25 +409,44 @@ function Home() {
               ₹{service.price}
             </h3>
 
-            <button
-              onClick={() =>
-                bookService(service.id)
-              }
-              className="
-              bg-blue-600
-              hover:bg-blue-700
-              transition
-              text-white
-              px-6
-              py-3
-              rounded-xl
-              font-semibold
-              shadow-md
-            "
-            >
-              Book
-            </button>
+          {(!user ||
+  user.role === "customer") ? (
 
+  <button
+    onClick={() =>
+      bookService(service.id)
+    }
+    className="
+    bg-blue-600
+    hover:bg-blue-700
+    transition
+    text-white
+    px-6
+    py-3
+    rounded-xl
+    font-semibold
+    shadow-md
+  "
+  >
+    Book
+  </button>
+
+) : (
+
+  <span
+    className="
+    bg-gray-200
+    text-gray-700
+    px-6
+    py-3
+    rounded-xl
+    font-semibold
+  "
+  >
+    Vendor View
+  </span>
+
+)}
           </div>
 
         </div>
