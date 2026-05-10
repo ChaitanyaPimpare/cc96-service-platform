@@ -48,51 +48,75 @@ function VendorDashboard() {
 
 
   /* ACCEPT */
+const acceptBooking = async (id) => {
 
-  const acceptBooking = async (id) => {
+  try {
 
-    try {
+    const res = await API.put(
+      `/bookings/${id}/accept`
+    );
 
-      const res = await API.put(
-        `/bookings/${id}/accept`
-      );
+    successToast(
+      res.data.message
+    );
 
-      successToast(
-        res.data.message
-      );
+    setBookings((prev) =>
+      prev.map((booking) =>
 
-      fetchBookings();
+        booking.id === id
 
-    } catch (error) {
+          ? {
+              ...booking,
+              status: "accepted",
+            }
 
-      errorToast("Failed");
-    }
-  };
+          : booking
+      )
+    );
 
+  } catch (error) {
+
+    console.log(error);
+
+    errorToast("Failed");
+  }
+};
 
   /* DELIVER */
 
-  const deliverBooking = async (id) => {
+ const deliverBooking = async (id) => {
 
-    try {
+  try {
 
-      const res = await API.put(
-        `/bookings/${id}/deliver`
-      );
+    const res = await API.put(
+      `/bookings/${id}/deliver`
+    );
 
-      successToast(
-        res.data.message
-      );
+    successToast(
+      res.data.message
+    );
 
-      fetchBookings();
+    setBookings((prev) =>
+      prev.map((booking) =>
 
-    } catch (error) {
+        booking.id === id
 
-      errorToast("Failed");
-    }
-  };
+          ? {
+              ...booking,
+              status: "delivered",
+            }
 
+          : booking
+      )
+    );
 
+  } catch (error) {
+
+    console.log(error);
+
+    errorToast("Failed");
+  }
+};
   /* FILTER BOOKINGS */
 
   const filteredBookings =
