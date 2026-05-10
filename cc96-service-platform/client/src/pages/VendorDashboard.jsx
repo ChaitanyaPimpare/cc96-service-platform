@@ -6,18 +6,25 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-import toast from "react-hot-toast";
-
-import Navbar from "../components/Navbar";
-
 import API from "../services/api";
+
+import toast from "react-hot-toast";
 
 function VendorDashboard() {
 
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] =
+    useState([]);
+
+  const [filter, setFilter] =
+    useState("all");
+
+  const [search, setSearch] =
+    useState("");
 
   useEffect(() => {
+
     fetchBookings();
+
   }, []);
 
   const fetchBookings = async () => {
@@ -36,6 +43,9 @@ function VendorDashboard() {
     }
   };
 
+
+  /* ACCEPT */
+
   const acceptBooking = async (id) => {
 
     try {
@@ -44,15 +54,20 @@ function VendorDashboard() {
         `/bookings/${id}/accept`
       );
 
-      toast.success(res.data.message);
+      successToast(
+        res.data.message
+      );
 
       fetchBookings();
 
     } catch (error) {
 
-      toast.error("Failed");
+      errorToast("Failed");
     }
   };
+
+
+  /* DELIVER */
 
   const deliverBooking = async (id) => {
 
@@ -62,15 +77,42 @@ function VendorDashboard() {
         `/bookings/${id}/deliver`
       );
 
-      toast.success(res.data.message);
+      successToast(
+        res.data.message
+      );
 
       fetchBookings();
 
     } catch (error) {
 
-      toast.error("Failed");
+      errorToast("Failed");
     }
   };
+
+
+  /* FILTER BOOKINGS */
+
+  const filteredBookings =
+    bookings.filter((booking) => {
+
+      const matchesFilter =
+        filter === "all"
+          ? true
+          : booking.status === filter;
+
+      const matchesSearch =
+        booking.Service?.title
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          );
+
+      return (
+        matchesFilter &&
+        matchesSearch
+      );
+    });
+
 
   return (
     <div
@@ -82,11 +124,18 @@ function VendorDashboard() {
     "
     >
 
-      {/* <Navbar /> */}
+      <div className="p-5 md:p-10">
 
-      <div className="p-10">
+        {/* TITLE */}
 
-        <h1 className="text-5xl font-bold mb-10">
+        <h1
+          className="
+          text-4xl
+          md:text-5xl
+          font-bold
+          mb-10
+        "
+        >
           Vendor Dashboard
         </h1>
 
@@ -102,6 +151,8 @@ function VendorDashboard() {
         "
         >
 
+          {/* TOTAL */}
+
           <div
             className="
             bg-white
@@ -111,9 +162,20 @@ function VendorDashboard() {
           "
           >
 
-            <FaClipboardList className="text-5xl text-blue-600" />
+            <FaClipboardList
+              className="
+              text-5xl
+              text-blue-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
               {bookings.length}
             </h2>
 
@@ -124,6 +186,8 @@ function VendorDashboard() {
           </div>
 
 
+          {/* ACCEPTED */}
+
           <div
             className="
             bg-blue-100
@@ -133,14 +197,26 @@ function VendorDashboard() {
           "
           >
 
-            <FaClock className="text-5xl text-blue-600" />
+            <FaClock
+              className="
+              text-5xl
+              text-blue-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
 
               {
                 bookings.filter(
                   (b) =>
-                    b.status === "accepted"
+                    b.status ===
+                    "accepted"
                 ).length
               }
 
@@ -153,6 +229,8 @@ function VendorDashboard() {
           </div>
 
 
+          {/* DELIVERED */}
+
           <div
             className="
             bg-green-100
@@ -162,14 +240,26 @@ function VendorDashboard() {
           "
           >
 
-            <FaCheckCircle className="text-5xl text-green-600" />
+            <FaCheckCircle
+              className="
+              text-5xl
+              text-green-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
 
               {
                 bookings.filter(
                   (b) =>
-                    b.status === "delivered"
+                    b.status ===
+                    "delivered"
                 ).length
               }
 
@@ -184,9 +274,152 @@ function VendorDashboard() {
         </div>
 
 
+        {/* FILTERS */}
+
+        <div
+          className="
+          flex
+          flex-col
+          lg:flex-row
+          gap-5
+          justify-between
+          items-center
+          mb-10
+        "
+        >
+
+          {/* SEARCH */}
+
+          <input
+            type="text"
+            placeholder="Search services..."
+            value={search}
+            onChange={(e) =>
+              setSearch(
+                e.target.value
+              )
+            }
+            className="
+            w-full
+            lg:w-80
+            bg-white
+            border
+            border-gray-300
+            px-5
+            py-3
+            rounded-2xl
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
+          />
+
+
+          {/* FILTER BUTTONS */}
+
+          <div
+            className="
+            flex
+            gap-3
+            flex-wrap
+          "
+          >
+
+            <button
+              onClick={() =>
+                setFilter("all")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "all"
+                    ? "bg-black text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              All
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("pending")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "pending"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Pending
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("accepted")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "accepted"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Accepted
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("delivered")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "delivered"
+                    ? "bg-green-600 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Delivered
+            </button>
+
+          </div>
+
+        </div>
+
+
         {/* EMPTY */}
 
-        {bookings.length === 0 && (
+        {filteredBookings.length === 0 && (
 
           <div
             className="
@@ -198,11 +431,21 @@ function VendorDashboard() {
           "
           >
 
-            <h2 className="text-3xl font-bold">
-              No orders yet
+            <h2
+              className="
+              text-3xl
+              font-bold
+            "
+            >
+              No orders found
             </h2>
 
+            <p className="text-gray-500 mt-3">
+              Try changing filters.
+            </p>
+
           </div>
+
         )}
 
 
@@ -210,135 +453,167 @@ function VendorDashboard() {
 
         <div className="grid gap-8">
 
-          {bookings.map((booking) => (
-
-            <div
-              key={booking.id}
-              className="
-              bg-white
-              rounded-3xl
-              shadow-xl
-              overflow-hidden
-              flex
-              flex-col
-              md:flex-row
-            "
-            >
-
-              <img
-                src={booking.Service?.image}
-                className="
-                w-full
-                md:w-72
-                h-60
-                object-cover
-              "
-              />
+          {filteredBookings.map(
+            (booking) => (
 
               <div
+                key={booking.id}
                 className="
-                flex-1
-                p-8
+                bg-white
+                rounded-3xl
+                shadow-xl
+                overflow-hidden
                 flex
-                justify-between
-                items-center
-                flex-wrap
-                gap-5
+                flex-col
+                lg:flex-row
               "
               >
 
-                <div>
+                <img
+                  src={
+                    booking.Service?.image
+                  }
+                  className="
+                  w-full
+                  lg:w-72
+                  h-60
+                  object-cover
+                "
+                />
 
-                  <h2 className="text-3xl font-bold">
-                    {booking.Service?.title}
-                  </h2>
+                <div
+                  className="
+                  flex-1
+                  p-8
+                  flex
+                  justify-between
+                  items-center
+                  flex-wrap
+                  gap-5
+                "
+                >
 
-                  <p className="text-gray-500 mt-3">
-                    {booking.Service?.description}
-                  </p>
+                  <div>
 
-                  <p className="mt-4 text-gray-400">
-                    Order ID:
-                    #{booking.id}
-                  </p>
-
-                </div>
-
-
-                {/* ACTIONS */}
-
-                <div className="flex gap-4 flex-wrap">
-
-                  {booking.status === "pending" && (
-                    <button
-                      onClick={() =>
-                        acceptBooking(
-                          booking.id
-                        )
+                    <h2
+                      className="
+                      text-3xl
+                      font-bold
+                    "
+                    >
+                      {
+                        booking.Service
+                          ?.title
                       }
+                    </h2>
+
+                    <p
                       className="
-                      bg-blue-600
-                      hover:bg-blue-700
-                      transition
-                      text-white
-                      px-6
-                      py-3
-                      rounded-xl
-                      font-semibold
+                      text-gray-500
+                      mt-3
                     "
                     >
-                      Accept
-                    </button>
-                  )}
-
-
-                  {booking.status === "accepted" && (
-                    <button
-                      onClick={() =>
-                        deliverBooking(
-                          booking.id
-                        )
+                      {
+                        booking.Service
+                          ?.description
                       }
+                    </p>
+
+                    <p
                       className="
-                      bg-green-600
-                      hover:bg-green-700
-                      transition
-                      text-white
-                      px-6
-                      py-3
-                      rounded-xl
-                      font-semibold
+                      mt-4
+                      text-gray-400
                     "
                     >
-                      Deliver
-                    </button>
-                  )}
+                      Order ID:
+                      #{booking.id}
+                    </p>
+
+                  </div>
 
 
-                  {booking.status === "delivered" && (
+                  {/* ACTIONS */}
 
-                    <span
-                      className="
-                      bg-green-100
-                      text-green-700
-                      px-6
-                      py-3
-                      rounded-xl
-                      font-semibold
-                    "
-                    >
-                      Delivered
-                    </span>
+                  <div className="flex gap-4 flex-wrap">
 
-                  )}
+                    {booking.status ===
+                      "pending" && (
+
+                      <button
+                        onClick={() =>
+                          acceptBooking(
+                            booking.id
+                          )
+                        }
+                        className="
+                        bg-blue-600
+                        hover:bg-blue-700
+                        transition
+                        text-white
+                        px-6
+                        py-3
+                        rounded-xl
+                        font-semibold
+                      "
+                      >
+                        Accept
+                      </button>
+
+                    )}
+
+
+                    {booking.status ===
+                      "accepted" && (
+
+                      <button
+                        onClick={() =>
+                          deliverBooking(
+                            booking.id
+                          )
+                        }
+                        className="
+                        bg-green-600
+                        hover:bg-green-700
+                        transition
+                        text-white
+                        px-6
+                        py-3
+                        rounded-xl
+                        font-semibold
+                      "
+                      >
+                        Deliver
+                      </button>
+
+                    )}
+
+
+                    {booking.status ===
+                      "delivered" && (
+
+                      <span
+                        className="
+                        bg-green-100
+                        text-green-700
+                        px-6
+                        py-3
+                        rounded-xl
+                        font-semibold
+                      "
+                      >
+                        Delivered
+                      </span>
+
+                    )}
+
+                  </div>
 
                 </div>
 
               </div>
 
-            </div>
-
-          ))}
+            )
+          )}
 
         </div>
 
@@ -349,3 +624,5 @@ function VendorDashboard() {
 }
 
 export default VendorDashboard;
+
+

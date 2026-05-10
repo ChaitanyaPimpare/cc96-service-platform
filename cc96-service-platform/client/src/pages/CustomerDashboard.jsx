@@ -6,20 +6,27 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-import Navbar from "../components/Navbar";
-
 import API from "../services/api";
 
 function CustomerDashboard() {
 
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] =
+    useState([]);
+
+  const [filter, setFilter] =
+    useState("all");
+
+  const [search, setSearch] =
+    useState("");
 
   const user = JSON.parse(
     localStorage.getItem("user")
   );
 
   useEffect(() => {
+
     fetchBookings();
+
   }, []);
 
   const fetchBookings = async () => {
@@ -38,6 +45,31 @@ function CustomerDashboard() {
     }
   };
 
+
+  /* FILTER BOOKINGS */
+
+  const filteredBookings =
+    bookings.filter((booking) => {
+
+      const matchesFilter =
+        filter === "all"
+          ? true
+          : booking.status === filter;
+
+      const matchesSearch =
+        booking.Service?.title
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          );
+
+      return (
+        matchesFilter &&
+        matchesSearch
+      );
+    });
+
+
   return (
     <div
       className="
@@ -48,11 +80,18 @@ function CustomerDashboard() {
     "
     >
 
-      {/* <Navbar /> */}
+      <div className="p-5 md:p-10">
 
-      <div className="p-10">
+        {/* TITLE */}
 
-        <h1 className="text-5xl font-bold mb-10">
+        <h1
+          className="
+          text-4xl
+          md:text-5xl
+          font-bold
+          mb-10
+        "
+        >
           My Bookings
         </h1>
 
@@ -68,6 +107,8 @@ function CustomerDashboard() {
         "
         >
 
+          {/* TOTAL */}
+
           <div
             className="
             bg-white
@@ -77,9 +118,20 @@ function CustomerDashboard() {
           "
           >
 
-            <FaClipboardList className="text-5xl text-blue-600" />
+            <FaClipboardList
+              className="
+              text-5xl
+              text-blue-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
               {bookings.length}
             </h2>
 
@@ -90,6 +142,8 @@ function CustomerDashboard() {
           </div>
 
 
+          {/* PENDING */}
+
           <div
             className="
             bg-yellow-100
@@ -99,9 +153,20 @@ function CustomerDashboard() {
           "
           >
 
-            <FaClock className="text-5xl text-yellow-600" />
+            <FaClock
+              className="
+              text-5xl
+              text-yellow-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
 
               {
                 bookings.filter(
@@ -119,6 +184,8 @@ function CustomerDashboard() {
           </div>
 
 
+          {/* DELIVERED */}
+
           <div
             className="
             bg-green-100
@@ -128,9 +195,20 @@ function CustomerDashboard() {
           "
           >
 
-            <FaCheckCircle className="text-5xl text-green-600" />
+            <FaCheckCircle
+              className="
+              text-5xl
+              text-green-600
+            "
+            />
 
-            <h2 className="text-4xl font-bold mt-5">
+            <h2
+              className="
+              text-4xl
+              font-bold
+              mt-5
+            "
+            >
 
               {
                 bookings.filter(
@@ -150,9 +228,152 @@ function CustomerDashboard() {
         </div>
 
 
+        {/* FILTERS */}
+
+        <div
+          className="
+          flex
+          flex-col
+          lg:flex-row
+          gap-5
+          justify-between
+          items-center
+          mb-10
+        "
+        >
+
+          {/* SEARCH */}
+
+          <input
+            type="text"
+            placeholder="Search services..."
+            value={search}
+            onChange={(e) =>
+              setSearch(
+                e.target.value
+              )
+            }
+            className="
+            w-full
+            lg:w-80
+            bg-white
+            border
+            border-gray-300
+            px-5
+            py-3
+            rounded-2xl
+            outline-none
+            focus:ring-2
+            focus:ring-blue-500
+          "
+          />
+
+
+          {/* FILTER BUTTONS */}
+
+          <div
+            className="
+            flex
+            gap-3
+            flex-wrap
+          "
+          >
+
+            <button
+              onClick={() =>
+                setFilter("all")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "all"
+                    ? "bg-black text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              All
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("pending")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "pending"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Pending
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("accepted")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "accepted"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Accepted
+            </button>
+
+
+            <button
+              onClick={() =>
+                setFilter("delivered")
+              }
+              className={`
+                px-5
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+
+                ${
+                  filter === "delivered"
+                    ? "bg-green-600 text-white"
+                    : "bg-white"
+                }
+              `}
+            >
+              Delivered
+            </button>
+
+          </div>
+
+        </div>
+
+
         {/* EMPTY STATE */}
 
-        {bookings.length === 0 && (
+        {filteredBookings.length === 0 && (
 
           <div
             className="
@@ -164,15 +385,22 @@ function CustomerDashboard() {
           "
           >
 
-            <h2 className="text-3xl font-bold">
-              No bookings yet
+            <h2
+              className="
+              text-3xl
+              font-bold
+            "
+            >
+              No bookings found
             </h2>
 
             <p className="text-gray-500 mt-3">
-              Book your first service now.
+              Try changing filters or
+              book a new service.
             </p>
 
           </div>
+
         )}
 
 
@@ -180,91 +408,120 @@ function CustomerDashboard() {
 
         <div className="grid gap-8">
 
-          {bookings.map((booking) => (
-
-            <div
-              key={booking.id}
-              className="
-              bg-white
-              rounded-3xl
-              shadow-xl
-              overflow-hidden
-              flex
-              flex-col
-              md:flex-row
-            "
-            >
-
-              <img
-                src={booking.Service?.image}
-                className="
-                w-full
-                md:w-72
-                h-60
-                object-cover
-              "
-              />
+          {filteredBookings.map(
+            (booking) => (
 
               <div
+                key={booking.id}
                 className="
-                flex-1
-                p-8
+                bg-white
+                rounded-3xl
+                shadow-xl
+                overflow-hidden
                 flex
-                justify-between
-                items-center
-                flex-wrap
-                gap-5
+                flex-col
+                lg:flex-row
               "
               >
 
-                <div>
+                <img
+                  src={
+                    booking.Service?.image
+                  }
+                  className="
+                  w-full
+                  lg:w-72
+                  h-60
+                  object-cover
+                "
+                />
 
-                  <h2 className="text-3xl font-bold">
-                    {booking.Service?.title}
-                  </h2>
+                <div
+                  className="
+                  flex-1
+                  p-8
+                  flex
+                  justify-between
+                  items-center
+                  flex-wrap
+                  gap-5
+                "
+                >
 
-                  <p className="text-gray-500 mt-3">
-                    {booking.Service?.description}
-                  </p>
+                  <div>
 
-                  <p className="mt-4 text-gray-400">
-                    Booking ID:
-                    #{booking.id}
-                  </p>
+                    <h2
+                      className="
+                      text-3xl
+                      font-bold
+                    "
+                    >
+                      {
+                        booking.Service
+                          ?.title
+                      }
+                    </h2>
 
-                </div>
+                    <p
+                      className="
+                      text-gray-500
+                      mt-3
+                    "
+                    >
+                      {
+                        booking.Service
+                          ?.description
+                      }
+                    </p>
+
+                    <p
+                      className="
+                      mt-4
+                      text-gray-400
+                    "
+                    >
+                      Booking ID:
+                      #{booking.id}
+                    </p>
+
+                  </div>
 
 
-                {/* STATUS */}
+                  {/* STATUS */}
 
-                <div>
+                  <div>
 
-                  <span
-                    className={`
-                    px-6
-                    py-3
-                    rounded-full
-                    text-white
-                    font-semibold
-                    text-lg
+                    <span
+                      className={`
+                        px-6
+                        py-3
+                        rounded-full
+                        text-white
+                        font-semibold
+                        text-lg
 
-                    ${booking.status === "pending"
-                      ? "bg-yellow-500"
-                      : booking.status === "accepted"
-                      ? "bg-blue-600"
-                      : "bg-green-600"}
-                  `}
-                  >
-                    {booking.status}
-                  </span>
+                        ${
+                          booking.status ===
+                          "pending"
+                            ? "bg-yellow-500"
+                            : booking.status ===
+                              "accepted"
+                            ? "bg-blue-600"
+                            : "bg-green-600"
+                        }
+                      `}
+                    >
+                      {booking.status}
+                    </span>
+
+                  </div>
 
                 </div>
 
               </div>
 
-            </div>
-
-          ))}
+            )
+          )}
 
         </div>
 
