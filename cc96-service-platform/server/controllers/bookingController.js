@@ -71,7 +71,17 @@ exports.vendorBookings = async (req, res) => {
   try {
 
     const bookings = await Booking.findAll({
-      include: [Service],
+      include: [
+  Service,
+  {
+    model: User,
+    attributes: [
+      "name",
+      "email",
+      "phone",
+    ],
+  },
+],
     });
 
     res.json(bookings);

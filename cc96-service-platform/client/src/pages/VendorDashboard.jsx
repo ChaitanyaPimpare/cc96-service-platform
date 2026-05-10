@@ -522,15 +522,54 @@ function VendorDashboard() {
                       }
                     </p>
 
-                    <p
-                      className="
-                      mt-4
-                      text-gray-400
-                    "
-                    >
-                      Order ID:
-                      #{booking.id}
-                    </p>
+                   <div className="mt-4 space-y-2">
+
+  <p
+    className="
+    text-gray-400
+  "
+  >
+    Order ID:
+    #{booking.id}
+  </p>
+
+
+  <p
+    className="
+    text-gray-600
+  "
+  >
+    Customer:
+    <span className="font-semibold ml-2">
+      {booking.User?.name}
+    </span>
+  </p>
+
+
+  <p
+    className="
+    text-gray-600
+  "
+  >
+    Email:
+    <span className="ml-2">
+      {booking.User?.email}
+    </span>
+  </p>
+
+
+  <p
+    className="
+    text-gray-600
+  "
+  >
+    Phone:
+    <span className="ml-2">
+      {booking.User?.phone}
+    </span>
+  </p>
+
+</div>
 
                   </div>
 
