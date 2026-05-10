@@ -19,7 +19,7 @@ function Login({ isModal })  {
 const { closeModal } =
   useAuthModal();
 
-  
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -42,57 +42,62 @@ const { closeModal } =
 
   const handleLogin = async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
+
+  try {
 
     setLoading(true);
 
-    try {
+    const res = await API.post(
+      "/auth/login",
+      formData
+    );
 
-      const res = await API.post(
-        "/auth/login",
-        formData
+    localStorage.setItem(
+      "token",
+      res.data.token
+    );
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(res.data.user)
+    );
+
+    toast.success(
+      "Login successful"
+    );
+
+    closeModal();
+
+    if (
+      res.data.user.role === "vendor"
+    ) {
+
+      navigate(
+        "/vendor/dashboard"
       );
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+    } else {
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
-
-      toast.success(
-        "Login successful"
-      );
-closeModal();
-      setLoading(false);
-
-      if (
-        res.data.user.role === "vendor"
-      ) {
-
-        navigate("/vendor/dashboard");
-
-      } else {
-
-        navigate(
-          "/customer/dashboard"
-        );
-      }
-
-    } catch (error) {
-
-      setLoading(false);
-
-      toast.error(
-        error.response?.data?.message ||
-        "Login failed"
+      navigate(
+        "/customer/dashboard"
       );
     }
-  };
 
+  } catch (error) {
+
+    console.log(error);
+
+    toast.error(
+      error.response?.data?.message ||
+      "Login failed"
+    );
+
+  } finally {
+
+    setLoading(false);
+  }
+};
  return (
   <div
     className={
