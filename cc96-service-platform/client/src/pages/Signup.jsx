@@ -8,8 +8,8 @@ import API from "../services/api";
 import toast from "react-hot-toast";
 
 import {
-  useNavigate,
-  Link,
+  
+  
 } from "react-router-dom";
 
 import {
@@ -21,7 +21,7 @@ function Signup({ isModal }) {
 
   const { setMode } =
   useAuthModal();
-  const navigate = useNavigate();
+ 
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -104,6 +104,7 @@ function Signup({ isModal }) {
       toast.success(
         res.data.message
       );
+
       setOtp("");
 
 setShowOtp(false);

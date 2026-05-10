@@ -2,9 +2,11 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
+
 import {
   useAuthModal,
 } from "../context/AuthModalContext";
+
 import { useState } from "react";
 
 import {
@@ -13,10 +15,12 @@ import {
 } from "react-icons/fi";
 
 function Navbar() {
-const {
-  openLogin,
-  openSignup,
-} = useAuthModal();
+
+  const {
+    openLogin,
+    openSignup,
+  } = useAuthModal();
+
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] =
@@ -138,44 +142,36 @@ const {
           {!user ? (
             <>
 
-              <Link to="/login">
+              <button
+                onClick={openLogin}
+                className="
+                bg-black
+                hover:bg-gray-800
+                transition
+                text-white
+                px-5
+                py-2
+                rounded-xl
+              "
+              >
+                Login
+              </button>
 
-                <button
-  onClick={openLogin}
-  className="
-  bg-black
-  hover:bg-gray-800
-  transition
-  text-white
-  px-5
-  py-2
-  rounded-xl
-"
->
-  Login
-</button>
-
-              </Link>
-
-
-              <Link to="/signup">
 
               <button
-  onClick={openSignup}
-  className="
-  bg-blue-600
-  hover:bg-blue-700
-  transition
-  text-white
-  px-5
-  py-2
-  rounded-xl
-"
->
-  Signup
-</button>
-
-              </Link>
+                onClick={openSignup}
+                className="
+                bg-blue-600
+                hover:bg-blue-700
+                transition
+                text-white
+                px-5
+                py-2
+                rounded-xl
+              "
+              >
+                Signup
+              </button>
 
             </>
           ) : (
@@ -283,65 +279,50 @@ const {
 
 
           {!user ? (
+
             <div className="space-y-4">
 
-              <Link
-                to="/login"
-                onClick={() =>
-                  setMenuOpen(false)
-                }
+              <button
+                onClick={() => {
+
+                  openLogin();
+
+                  setMenuOpen(false);
+                }}
+                className="
+                w-full
+                bg-black
+                text-white
+                py-3
+                rounded-xl
+              "
               >
-
-             <button
-  onClick={() => {
-
-    openLogin();
-
-    setMenuOpen(false);
-  }}
-  className="
-  w-full
-  bg-black
-  text-white
-  py-3
-  rounded-xl
-"
->
-  Login
-</button>
-
-              </Link>
+                Login
+              </button>
 
 
-              <Link
-                to="/signup"
-                onClick={() =>
-                  setMenuOpen(false)
-                }
+              <button
+                onClick={() => {
+
+                  openSignup();
+
+                  setMenuOpen(false);
+                }}
+                className="
+                w-full
+                bg-blue-600
+                text-white
+                py-3
+                rounded-xl
+              "
               >
-
-             <button
-  onClick={() => {
-
-    openSignup();
-
-    setMenuOpen(false);
-  }}
-  className="
-  w-full
-  bg-blue-600
-  text-white
-  py-3
-  rounded-xl
-"
->
-  Signup
-</button>
-
-              </Link>
+                Signup
+              </button>
 
             </div>
+
           ) : (
+
             <div className="space-y-4">
 
               <p className="font-semibold">
@@ -362,6 +343,7 @@ const {
               </button>
 
             </div>
+
           )}
 
         </div>

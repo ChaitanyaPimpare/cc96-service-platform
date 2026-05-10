@@ -4,7 +4,7 @@ import API from "../services/api";
 
 import toast from "react-hot-toast";
 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   useAuthModal,
@@ -19,7 +19,7 @@ function Login({ isModal })  {
 const { closeModal } =
   useAuthModal();
 
-  const navigate = useNavigate();
+  
 
   const [showPassword, setShowPassword] =
     useState(false);
