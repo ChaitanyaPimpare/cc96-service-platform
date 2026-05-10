@@ -24,9 +24,37 @@ function Home() {
 
   const [services, setServices] = useState([]);
 
-  const user = JSON.parse(
-    localStorage.getItem("user")
+ const [user, setUser] =
+  useState(null);
+
+useEffect(() => {
+
+  const updateUser = () => {
+
+    const storedUser =
+      JSON.parse(
+        localStorage.getItem("user")
+      );
+
+    setUser(storedUser);
+  };
+
+  updateUser();
+
+  window.addEventListener(
+    "storage",
+    updateUser
   );
+
+  return () => {
+
+    window.removeEventListener(
+      "storage",
+      updateUser
+    );
+  };
+
+}, []);
 
   useEffect(() => {
     fetchServices();
