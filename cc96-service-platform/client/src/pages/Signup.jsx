@@ -59,54 +59,57 @@ const [generatedOtp,
 
   const handleSignup = async (e) => {
 
-    e.preventDefault();
-const emailRegex =
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  e.preventDefault();
 
-if (
-  !emailRegex.test(
-    formData.email
-  )
-) {
+  const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  errorToast(
-    "Please enter a valid email"
-  );
+  if (
+    !emailRegex.test(
+      formData.email
+    )
+  ) {
 
-  return;
-}
+    errorToast(
+      "Please enter a valid email"
+    );
+
+    return;
+  }
+
+  try {
+
     setLoading(true);
 
-    try {
+    const res = await API.post(
+      "/auth/signup",
+      formData
+    );
 
-      const res = await API.post(
-        "/auth/signup",
-        formData
-      );
+    successToast(
+      "OTP sent successfully"
+    );
 
-     successToast(
-        "OTP sent successfully"
-      );
+    setGeneratedOtp(
+      res.data.otp
+    );
 
-     setGeneratedOtp(
-  res.data.otp
-);
+    setShowOtp(true);
 
-      setLoading(false);
+  } catch (error) {
 
-      setShowOtp(true);
+    console.log(error);
 
-    } catch (error) {
+    errorToast(
+      error.response?.data?.message ||
+      "Signup failed"
+    );
 
-      setLoading(false);
+  } finally {
 
-      toast.error(
-        error.response?.data?.message ||
-        "Signup failed"
-      );
-    }
-  };
-
+    setLoading(false);
+  }
+};
   const verifyOtp = async () => {
 
     setLoading(true);
