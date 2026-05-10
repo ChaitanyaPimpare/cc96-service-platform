@@ -5,7 +5,10 @@ import {
 
 import API from "../services/api";
 
-import toast from "react-hot-toast";
+import {
+  successToast,
+  errorToast,
+} from "../utils/toast";
 
 import {
   
