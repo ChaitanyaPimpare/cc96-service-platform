@@ -22,10 +22,14 @@ function Signup({ isModal }) {
   const { setMode } =
   useAuthModal();
  
+  
 
   const [showPassword, setShowPassword] =
     useState(false);
-
+    
+const [generatedOtp,
+  setGeneratedOtp] =
+  useState("");
   const [showOtp, setShowOtp] =
     useState(false);
 
@@ -67,10 +71,9 @@ function Signup({ isModal }) {
         "OTP sent successfully"
       );
 
-      console.log(
-        "OTP:",
-        res.data.otp
-      );
+     setGeneratedOtp(
+  res.data.otp
+);
 
       setLoading(false);
 
@@ -393,7 +396,26 @@ setShowOtp(false);
       ) : (
 
         <div className="space-y-5">
+<div
+  className="
+  bg-blue-50
+  border
+  border-blue-200
+  text-blue-700
+  p-4
+  rounded-2xl
+  text-center
+  font-semibold
+"
+>
 
+  Demo OTP for testing:
+
+  <span className="ml-2">
+    {generatedOtp}
+  </span>
+
+</div>
           <h2
             className="
             text-center
