@@ -67,7 +67,7 @@ const [generatedOtp,
         formData
       );
 
-      toast.success(
+     successToast(
         "OTP sent successfully"
       );
 
@@ -104,7 +104,7 @@ const [generatedOtp,
         }
       );
 
-      toast.success(
+     successToast(
         res.data.message
       );
 
@@ -120,7 +120,7 @@ setShowOtp(false);
 
       setLoading(false);
 
-      toast.error(
+     errorToast(
         error.response?.data?.message ||
         "OTP verification failed"
       );

@@ -68,17 +68,17 @@ function Navbar() {
 
         <Link to="/">
 
-          <h1
-            className="
-            text-3xl
-            font-bold
-            text-blue-600
-          "
-          >
-            ServiceHub
-          </h1>
+  <img
+    src="/logo.png"
+    alt="ServiceHub Logo"
+    className="
+    h-12
+    w-auto
+    object-contain
+  "
+  />
 
-        </Link>
+</Link>
 
 
         {/* DESKTOP MENU */}

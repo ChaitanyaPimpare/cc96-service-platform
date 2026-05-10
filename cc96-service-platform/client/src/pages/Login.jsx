@@ -2,7 +2,10 @@ import { useState } from "react";
 
 import API from "../services/api";
 
-import toast from "react-hot-toast";
+import {
+  successToast,
+  errorToast,
+} from "../utils/toast";
 
 import { useNavigate } from "react-router-dom";
 
@@ -63,9 +66,9 @@ const { closeModal } =
       JSON.stringify(res.data.user)
     );
 
-    toast.success(
-      "Login successful"
-    );
+   successToast(
+  "Login successful"
+);
 
     closeModal();
 
@@ -88,7 +91,7 @@ const { closeModal } =
 
     console.log(error);
 
-    toast.error(
+    errorToast(
       error.response?.data?.message ||
       "Login failed"
     );

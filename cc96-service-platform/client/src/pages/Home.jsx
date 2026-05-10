@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import {
+  successToast,
+  errorToast,
+} from "../utils/toast";
 import Footer from "../components/Footer";
 import TutorialModal from "../components/TutorialModal";
 
@@ -46,7 +49,7 @@ function Home() {
   const bookService = async (serviceId) => {
 
     if (!user) {
-      return toast.error("Please login first");
+      return errorToast("Please login first");
     }
 
     try {
@@ -59,11 +62,11 @@ function Home() {
         }
       );
 
-      toast.success(res.data.message);
+      successToast(res.data.message);
 
     } catch (error) {
 
-      toast.error("Booking failed");
+      errorToast("Booking failed");
     }
   };
 
@@ -433,18 +436,22 @@ function Home() {
 
 ) : (
 
-  <span
-    className="
-    bg-gray-200
-    text-gray-700
-    px-6
-    py-3
-    rounded-xl
-    font-semibold
-  "
-  >
-    Vendor View
-  </span>
+ <span
+  className="
+  bg-gray-200
+  text-gray-700
+  w-40
+  h-14
+  flex
+  items-center
+  justify-center
+  rounded-xl
+  font-semibold
+  text-lg
+"
+>
+  Vendor View
+</span>
 
 )}
           </div>
