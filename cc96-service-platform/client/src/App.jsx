@@ -9,6 +9,7 @@ import VendorDashboard from "./pages/VendorDashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,25 +24,25 @@ function App() {
 
   <Route path="/signup" element={<Signup />} />
 
-  <Route
-    path="/customer/dashboard"
-    element={
-      <ProtectedRoute>
-        <CustomerDashboard />
-      </ProtectedRoute>
-    }
-  />
-
-  <Route
-    path="/vendor/dashboard"
-    element={
-      <ProtectedRoute>
-        <VendorDashboard />
-      </ProtectedRoute>
-    }
-  />
+ <Route
+  path="/customer/dashboard"
+  element={
+    <ProtectedRoute role="customer">
+      <CustomerDashboard />
+    </ProtectedRoute>
+  }
+/>
+ <Route
+  path="/vendor/dashboard"
+  element={
+    <ProtectedRoute role="vendor">
+      <VendorDashboard />
+    </ProtectedRoute>
+  }
+/>
 
 </Routes>
+
     </BrowserRouter>
   );
 }

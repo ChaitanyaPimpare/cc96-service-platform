@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import Footer from "../components/Footer";
+import {
+  FaStar,
+  FaSearch,
+  FaUsers,
+  FaTools,
+  FaClock,
+} from "react-icons/fa";
+
 import Navbar from "../components/Navbar";
 
 import API from "../services/api";
@@ -57,103 +66,417 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
+
+      {/* <Navbar /> */}
 
       {/* HERO SECTION */}
 
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center">
+      <div
+        className="
+        relative
+        h-[90vh]
+        bg-cover
+        bg-center
+        flex
+        items-center
+        justify-center
+      "
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a')",
+        }}
+      >
 
-        <h1 className="text-6xl font-bold mb-4">
-          Book Trusted Services
-        </h1>
+        {/* OVERLAY */}
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        <p className="text-xl">
-          Fast • Reliable • Professional
-        </p>
+        {/* CONTENT */}
+        <div className="relative z-10 text-center text-white px-5">
 
-        <div className="mt-8 flex justify-center gap-4">
+          <motion.h1
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="
+            text-5xl
+            md:text-7xl
+            font-bold
+            leading-tight
+          "
+          >
+            Book Trusted <br />
+            Home Services
+          </motion.h1>
 
-         <div className="mt-8 flex justify-center">
+          <p className="mt-6 text-xl text-gray-200">
+            Fast • Reliable • Professional
+          </p>
 
-  {user && (
-  <Link
-    to={
-      user.role === "vendor"
-        ? "/vendor/dashboard"
-        : "/customer/dashboard"
-    }
+
+          {/* SEARCH BAR */}
+
+          <div
+            className="
+            mt-10
+            bg-white
+            rounded-2xl
+            p-3
+            flex
+            items-center
+            gap-3
+            max-w-2xl
+            mx-auto
+            shadow-2xl
+          "
+          >
+
+            <FaSearch className="text-gray-500 text-xl ml-3" />
+
+            <input
+              type="text"
+              placeholder="Search services..."
+              className="
+              flex-1
+              outline-none
+              text-black
+              text-lg
+              px-2
+            "
+            />
+
+            <button
+              className="
+              bg-blue-600
+              hover:bg-blue-700
+              transition
+              text-white
+              px-8
+              py-3
+              rounded-xl
+              font-semibold
+            "
+            >
+              Search
+            </button>
+
+          </div>
+
+
+          {/* BUTTONS */}
+
+          <div className="mt-8 flex justify-center gap-4 flex-wrap">
+
+            {!user ? (
+              <>
+                <Link to="/signup">
+                  <button
+                    className="
+                    bg-white
+                    text-blue-600
+                    px-8
+                    py-3
+                    rounded-xl
+                    font-semibold
+                    hover:scale-105
+                    transition
+                  "
+                  >
+                    Signup
+                  </button>
+                </Link>
+
+                <Link to="/login">
+                  <button
+                    className="
+                    bg-blue-600
+                    text-white
+                    px-8
+                    py-3
+                    rounded-xl
+                    font-semibold
+                    hover:scale-105
+                    transition
+                  "
+                  >
+                    Login
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <Link
+                to={
+                  user.role === "vendor"
+                    ? "/vendor/dashboard"
+                    : "/customer/dashboard"
+                }
+              >
+                <button
+                  className="
+                  bg-white
+                  text-blue-600
+                  px-8
+                  py-3
+                  rounded-xl
+                  font-semibold
+                  hover:scale-105
+                  transition
+                "
+                >
+                  Dashboard
+                </button>
+              </Link>
+            )}
+
+          </div>
+
+        </div>
+      </div>
+
+
+      {/* STATS SECTION */}
+
+      <div
+        className="
+        grid
+        grid-cols-1
+        md:grid-cols-3
+        gap-6
+        px-10
+        py-16
+      "
+      >
+
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          className="
+          bg-white
+          rounded-3xl
+          shadow-lg
+          p-8
+          text-center
+        "
+        >
+
+          <FaUsers className="text-5xl text-blue-600 mx-auto" />
+
+          <h1 className="text-4xl font-bold mt-5">
+            10K+
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Happy Customers
+          </p>
+
+        </motion.div>
+
+
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          className="
+          bg-white
+          rounded-3xl
+          shadow-lg
+          p-8
+          text-center
+        "
+        >
+
+          <FaTools className="text-5xl text-green-600 mx-auto" />
+
+          <h1 className="text-4xl font-bold mt-5">
+            500+
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Verified Vendors
+          </p>
+
+        </motion.div>
+
+
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          className="
+          bg-white
+          rounded-3xl
+          shadow-lg
+          p-8
+          text-center
+        "
+        >
+
+          <FaClock className="text-5xl text-orange-500 mx-auto" />
+
+          <h1 className="text-4xl font-bold mt-5">
+            24/7
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Customer Support
+          </p>
+
+        </motion.div>
+
+      </div>
+
+
+    {/* SERVICES SECTION */}
+
+<div className="px-10 py-10">
+
+  <h1
+    className="
+    text-5xl
+    font-bold
+    text-center
+    mb-14
+  "
   >
-    <button className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
-      Dashboard
-    </button>
-  </Link>
-)}
+    Popular Services
+  </h1>
+
+  <div
+    className="
+    grid
+    sm:grid-cols-2
+    lg:grid-cols-4
+    gap-10
+  "
+  >
+
+    {services.map((service) => (
+
+      <motion.div
+        whileHover={{ scale: 1.04 }}
+        key={service.id}
+        className="
+        bg-white
+        rounded-3xl
+        overflow-hidden
+        shadow-xl
+        flex
+        flex-col
+      "
+      >
+
+        {/* IMAGE */}
+
+        <img
+          src={service.image}
+          className="
+          h-60
+          w-full
+          object-cover
+        "
+        />
+
+
+        {/* CONTENT */}
+
+        <div
+          className="
+          p-6
+          flex
+          flex-col
+          flex-1
+        "
+        >
+
+          {/* STARS */}
+
+          <div className="flex items-center gap-1">
+
+            <FaStar className="text-yellow-400" />
+            <FaStar className="text-yellow-400" />
+            <FaStar className="text-yellow-400" />
+            <FaStar className="text-yellow-400" />
+            <FaStar className="text-yellow-400" />
+
+          </div>
+
+
+          {/* TITLE */}
+
+          <h2
+            className="
+            text-2xl
+            font-bold
+            mt-3
+          "
+          >
+            {service.title}
+          </h2>
+
+
+          {/* DESCRIPTION */}
+
+          <p
+            className="
+            text-gray-500
+            mt-2
+            min-h-[64px]
+          "
+          >
+            {service.description}
+          </p>
+
+
+          {/* PRICE + BUTTON */}
+
+          <div
+            className="
+            flex
+            justify-between
+            items-center
+            mt-auto
+            pt-6
+          "
+          >
+
+            <h3
+              className="
+              text-3xl
+              font-bold
+              text-blue-600
+            "
+            >
+              ₹{service.price}
+            </h3>
+
+            <button
+              onClick={() =>
+                bookService(service.id)
+              }
+              className="
+              bg-blue-600
+              hover:bg-blue-700
+              transition
+              text-white
+              px-6
+              py-3
+              rounded-xl
+              font-semibold
+              shadow-md
+            "
+            >
+              Book
+            </button>
+
+          </div>
+
+        </div>
+
+      </motion.div>
+
+    ))}
+
+  </div>
 
 </div>
+      {/* FOOTER */}
+<Footer />
 
-        </div>
-      </div>
-
-
-      {/* SERVICES */}
-
-      <div className="p-10">
-
-        <h2 className="text-4xl font-bold mb-10 text-center">
-          Popular Services
-        </h2>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-          {services.map((service) => (
-
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              key={service.id}
-              className="bg-white rounded-3xl shadow-xl overflow-hidden"
-            >
-
-              <img
-                src={service.image}
-                className="h-56 w-full object-cover"
-              />
-
-              <div className="p-5">
-
-                <h2 className="text-2xl font-bold">
-                  {service.title}
-                </h2>
-
-                <p className="text-gray-600 mt-2">
-                  {service.description}
-                </p>
-
-                <div className="flex justify-between items-center mt-5">
-
-                  <h3 className="text-2xl font-bold text-blue-600">
-                    ₹{service.price}
-                  </h3>
-
-                  <button
-                    onClick={() =>
-                      bookService(service.id)
-                    }
-                    className="bg-blue-600 text-white px-5 py-2 rounded-xl"
-                  >
-                    Book
-                  </button>
-
-                </div>
-
-              </div>
-
-            </motion.div>
-
-          ))}
-
-        </div>
-
-      </div>
     </div>
   );
 }
